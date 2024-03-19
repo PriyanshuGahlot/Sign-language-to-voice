@@ -1,10 +1,12 @@
+import os
+from Mic_input_handler import play
+from Mic_input_handler import say
 import cv2
 import mediapipe as mp
 import pickle
 import numpy as np
-import pyttsx3
+import threading
 
-tts = pyttsx3.init()
 
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
@@ -15,6 +17,8 @@ hands = mp_hands.Hands(static_image_mode=True)
 camera = cv2.VideoCapture(0)
 
 model = pickle.load(open("model.p","rb"))["model"]
+
+lastOutput = ""
 
 while(True):
     temp = []
@@ -32,9 +36,13 @@ while(True):
                 temp.append(x)
                 temp.append(y)
         output = model.predict([np.asarray(temp)])
-        print(output)
-        # tts.say(output)
-        # tts.runAndWait()
+        if(output!=lastOutput):
+            lastOutput = output
+            print(output)
+            threading.Thread(target=say, args=(output)).start()
+            #threading.Thread(target=play, args=(output)).start()
+            #play(output)
+
 
     cv2.imshow("Camera", frame)
     if (cv2.waitKey(1) == ord("q")):
@@ -42,15 +50,3 @@ while(True):
 
 camera.release()
 cv2.destroyWindow()
-
-
-#to play mp3 file as mic input
-# import time
-# from pygame import mixer
-#
-# mixer.init(devicename = "CABLE Input (2- VB-Audio Virtual Cable)") # Initialize it with the correct device
-# mixer.music.load("output.wav") # Load the mp3
-# mixer.music.play() # Play it
-#
-# while mixer.music.get_busy():  # wait for music to finish playing
-#     time.sleep(1)
