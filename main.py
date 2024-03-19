@@ -18,25 +18,9 @@ while(True):
     if results.multi_hand_landmarks:
         # Hands were detected
         for hand_landmarks in results.multi_hand_landmarks:
-            min_x, min_y = float('inf'), float('inf')
-            max_x, max_y = float('-inf'), float('-inf')
-            for idx, landmark in enumerate(hand_landmarks.landmark):
-                # Get the pixel coordinates of the landmark
-                height, width, _ = frame.shape
-                cx, cy = int(landmark.x * width), int(landmark.y * height)
-                print(f"Landmark {idx}: ({cx}, {cy})")
-
-                # Draw a small circle at the landmark position
-                cv2.circle(frame, (cx, cy), 5, (255, 0, 0), -1)
-            # for landmark in hand_landmarks.landmark:
-            #     height, width, _ = frame.shape
-            #     x, y = int(landmark.x * width), int(landmark.y * height)
-            #     min_x = min(min_x, x)
-            #     min_y = min(min_y, y)
-            #     max_x = max(max_x, x)
-            #     max_y = max(max_y, y)
-            #
-            # cv2.rectangle(frame, (int(0.7*min_x), int(0.7*min_y)), (int(max_x*1.1), int(max_y*1.1)), (0, 255, 0), 2)
+            drawing = mp.solutions.drawing_utils
+            drawing.draw_landmarks(frame,hand_landmarks,mp.solutions.hands.HAND_CONNECTIONS,mp.solutions.drawing_styles.get_default_hand_landmarks_style(),mp.solutions.drawing_styles.get_default_hand_connections_style())
+            print(hand_landmarks)
 
 
     cv2.imshow("Camera", frame)
