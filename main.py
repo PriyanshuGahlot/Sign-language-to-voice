@@ -7,12 +7,18 @@ import pickle
 import numpy as np
 import threading
 
+lock = threading.Lock()
+def play_audio(output):
+    global lock
+    if lock.acquire(blocking=False):
+        play(output)
+        lock.release()
 
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 
-hands = mp_hands.Hands(static_image_mode=True)
+hands = mp_hands.Hands(static_image_mode=True,max_num_hands=1)
 
 camera = cv2.VideoCapture(0)
 
@@ -39,7 +45,8 @@ while(True):
         if(output!=lastOutput):
             lastOutput = output
             print(output)
-            threading.Thread(target=say, args=(output)).start()
+            #threading.Thread(target=say, args=(output)).start()
+            threading.Thread(target=play_audio, args=(output)).start()
             #threading.Thread(target=play, args=(output)).start()
             #play(output)
 
