@@ -2,3 +2,4 @@ data
 *.pickle
 *.p
 *.wav
+forTesting.py
