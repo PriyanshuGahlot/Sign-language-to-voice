@@ -9,7 +9,7 @@ mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 
-hands = mp_hands.Hands()
+hands = mp_hands.Hands(static_image_mode=True)
 
 data = []
 labels = []
@@ -24,9 +24,9 @@ for dir in os.listdir(data_dir):
         if result.multi_hand_landmarks:
             for hand_landmarks in result.multi_hand_landmarks:
                 #mp_drawing.draw_landmarks(img,hand_landmark,mp_hands.HAND_CONNECTIONS,mp_drawing_styles.get_default_hand_landmarks_style(),mp_drawing_styles.get_default_hand_connections_style())
-                for i in hand_landmarks.landmark:
-                    x = i.x
-                    y = i.y
+                for i in range(len(hand_landmarks.landmark)):
+                    x = hand_landmarks.landmark[i].x
+                    y = hand_landmarks.landmark[i].y
                     temp.append(x)
                     temp.append(y)
             data.append(temp)
