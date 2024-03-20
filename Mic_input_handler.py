@@ -11,7 +11,7 @@ def play(output):
     mixer.music.load("output.wav")
     mixer.music.play()
     while mixer.music.get_busy():
-        time.sleep(0.5)
+        time.sleep(0.1)
     mixer.music.stop()
     mixer.quit()
     os.remove("output.wav")
