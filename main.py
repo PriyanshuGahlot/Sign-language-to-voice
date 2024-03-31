@@ -5,7 +5,9 @@ import cv2
 import mediapipe as mp
 import pickle
 import numpy as np
-import threading
+import threading\
+
+import time
 
 lock = threading.Lock()
 def play_audio(output):
@@ -25,6 +27,8 @@ camera = cv2.VideoCapture(0)
 model = pickle.load(open("model.p","rb"))["model"]
 
 lastOutput = ""
+startTime = time.time()
+threstholdTime = 1
 
 while(True):
     temp = []
@@ -42,13 +46,15 @@ while(True):
                 temp.append(x)
                 temp.append(y)
         output = model.predict([np.asarray(temp)])
+
         if(output!=lastOutput):
             lastOutput = output
+            startTime = time.time()
+            # print(output)
+            # threading.Thread(target=play_audio, args=(output)).start()
+        if(time.time()-startTime>threstholdTime):
             print(output)
-            #threading.Thread(target=say, args=(output)).start()
-            threading.Thread(target=play_audio, args=(output)).start()
-            #threading.Thread(target=play, args=(output)).start()
-            #play(output)
+            startTime = time.time()
 
 
     cv2.imshow("Camera", frame)
