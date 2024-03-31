@@ -27,6 +27,7 @@ camera = cv2.VideoCapture(0)
 model = pickle.load(open("model.p","rb"))["model"]
 
 lastOutput = ""
+lastSpoken = ""
 startTime = time.time()
 threstholdTime = 1
 
@@ -47,14 +48,15 @@ while(True):
                 temp.append(y)
         output = model.predict([np.asarray(temp)])
 
-        if(output!=lastOutput):
+        if(lastOutput != output):
             lastOutput = output
             startTime = time.time()
-            # print(output)
-            # threading.Thread(target=play_audio, args=(output)).start()
-        if(time.time()-startTime>threstholdTime):
-            print(output)
+
+        if(time.time()-startTime>threstholdTime and lastSpoken != output):
+            lastSpoken = output
             startTime = time.time()
+            print(output)
+            threading.Thread(target=play_audio, args=(output)).start()
 
 
     cv2.imshow("Camera", frame)
