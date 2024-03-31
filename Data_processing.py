@@ -9,7 +9,7 @@ mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 
-hands = mp_hands.Hands(static_image_mode=True)
+hands = mp_hands.Hands(static_image_mode=True,max_num_hands=1)
 
 data = []
 labels = []
@@ -31,6 +31,8 @@ for dir in os.listdir(data_dir):
                     temp.append(y)
             data.append(temp)
             labels.append(dir)
+        else:
+            print("bad collection",dir)
 
 f = open("processed_data.pickle","wb")
 pickle.dump({"data":data,"labels":labels},f)
