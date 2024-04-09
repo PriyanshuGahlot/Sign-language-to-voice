@@ -5,7 +5,7 @@ import cv2
 import mediapipe as mp
 import pickle
 import numpy as np
-import threading\
+import threading
 
 import time
 
@@ -20,7 +20,7 @@ mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 
-hands = mp_hands.Hands(static_image_mode=True,max_num_hands=1)
+hands = mp_hands.Hands(static_image_mode=True,max_num_hands=1,min_tracking_confidence=0.3)
 
 camera = cv2.VideoCapture(0)
 
