@@ -1,0 +1,1 @@
+Demo of the project is available here: [LinkedIn Post](https://www.linkedin.com/posts/priyanshu-gahlot_machinelearning-signlanguage-accessibility-activity-7176229889316937728-hK5K?utm_source=share&utm_medium=member_desktop)
